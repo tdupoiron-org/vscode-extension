@@ -1,0 +1,58 @@
+{
+  "name": "gardening-mcp-demo",
+  "displayName": "Gardening MCP Demo",
+  "description": "A self-contained gardening MCP server embedded in a VS Code extension.",
+  "version": "0.0.1",
+  "publisher": "tdupoiron",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdupoiron-org/vscode-extension.git"
+  },
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": ["Other"],
+  "extensionKind": ["ui"],
+  "capabilities": {
+    "virtualWorkspaces": false,
+    "untrustedWorkspaces": {
+      "supported": false
+    }
+  },
+  "activationEvents": ["onStartupFinished", "onMcpServerDefinitionProvider:gardening"],
+  "main": "./dist/extension.cjs",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gardening.showLogs",
+        "title": "Gardening: Show Logs"
+      }
+    ],
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "gardening",
+        "label": "Gardening"
+      }
+    ]
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node20 --external:vscode --outfile=dist/extension.cjs",
+    "watch": "npm run build -- --watch",
+    "test": "tsc -p tsconfig.test.json && node --test .test-build/test/*.test.js",
+    "vscode:prepublish": "npm run check && npm run build",
+    "package": "vsce package --no-dependencies --skip-license"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "1.101.0",
+    "@vscode/vsce": "^4.1.1",
+    "esbuild": "^0.27.0",
+    "typescript": "~5.9.3"
+  }
+}
